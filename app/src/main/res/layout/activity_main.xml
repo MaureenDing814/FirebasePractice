@@ -55,7 +55,7 @@
         android:layout_marginTop="20dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:hint="Whose secret "
+        android:hint="Whose secret to reveal? "
         />
 
     <Button

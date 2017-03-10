@@ -1,5 +1,6 @@
 package com.example.android.secret;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +12,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import static com.example.android.secret.R.id.textView;
+
 public class SecondActivity extends AppCompatActivity {
 
     @Override
@@ -18,9 +21,12 @@ public class SecondActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
 
+        Intent intent = getIntent();
+        String target = intent.getStringExtra("target");
+
         //grab the secret object
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("secret");
+        DatabaseReference myRef = database.getReference(target).child("secret");
 
         // Read from the database
         myRef.addValueEventListener(new ValueEventListener() {
@@ -29,9 +35,19 @@ public class SecondActivity extends AppCompatActivity {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
                 String value = dataSnapshot.getValue(String.class);
-
                 TextView textView = (TextView)findViewById(R.id.secret_display);
-                textView.setText(value);
+
+                //Error Message
+                if (value != null)
+                {
+                    textView.setText(value);
+                }
+
+                else
+                {
+                    textView.setText(getResources().getString(R.string.error_msg));
+                }
+
             }
 
             @Override

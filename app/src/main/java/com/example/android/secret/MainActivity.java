@@ -23,16 +23,21 @@ public class MainActivity extends AppCompatActivity {
 
         EditText user = (EditText) findViewById(R.id.name) ;
         String username = user.getText().toString();
-        DatabaseReference myRef = database.getReference("Cathy").child("secret");
+        DatabaseReference myRef = database.getReference(username).child("secret");
 
         EditText editText = (EditText) findViewById(R.id.editText);
         String userSecret = editText.getText().toString();
         myRef.setValue(userSecret);
 
+        user.setText("");
+        editText.setText("");
+
     }
 
     public void reveal(View view) {
         Intent intent= new Intent(this, SecondActivity.class);
+        EditText target = (EditText)findViewById(R.id.target);
+        intent.putExtra("target",target.getText().toString());
         startActivity(intent);
 
     }
